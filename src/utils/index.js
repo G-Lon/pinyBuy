@@ -1,9 +1,9 @@
-function formatNumber (n) {
+function formatNumber(n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
 }
 
-export function formatTime (date) {
+export function formatTime(date) {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -18,7 +18,29 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+// 抽取自己的 ajax 使用 Promise
+function thenAjax(opt) {
+  // 返回一个 promise对象即可
+  return new Promise((resolve, reject) => {
+    // 进行异步的操作
+    wx.request({
+      url: 'https://autumnfish.cn/wx/' + opt.url,
+      data: opt.data || {},
+      header: opt.header || {
+        'content-type': 'application/json'
+      },
+      method: opt.method || 'GET',
+      dataType: opt.dataType || 'json',
+      responseType: opt.responseType || 'text',
+      success: resolve,
+      fail: reject,
+      complete: () => {}
+    });
+  })
+}
+
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  thenAjax
 }

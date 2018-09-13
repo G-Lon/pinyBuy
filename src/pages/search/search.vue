@@ -1,5 +1,5 @@
 <template>
-  <div>我是个人中心</div>
+  <div>我是搜索</div>
 </template>
 
 <script>
