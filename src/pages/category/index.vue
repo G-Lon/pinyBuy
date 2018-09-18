@@ -64,7 +64,7 @@ export default {
         url: "api/public/v1/categories"
       })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.cateList = res.data.message;
       });
   }
@@ -122,16 +122,20 @@ page {
     scroll-view {
       height: 100%;
       text-align: center;
+      // 广告图
       .ad-icon {
         display: block;
         width: 100%;
         height: 180rpx;
       }
       .section {
+        // 大标题分类
         .title {
           display: block;
-          padding: 30rpx 0;
+          padding: 50rpx 0;
+          font-size: 48rpx;
         }
+        // 分类内容
         .list {
           display: flex;
           flex-wrap: wrap;
@@ -139,6 +143,8 @@ page {
             display: block;
             width: 33.333%;
             text-align: center;
+            margin-bottom: 20rpx;
+            // 分类的图片
             .section-icon {
               display: block;
               width: 95rpx;
@@ -146,7 +152,8 @@ page {
               margin: 0 auto;
             }
             .section-name {
-              font-size: 28rpx;
+              font-size: 24rpx;
+              display: block;
             }
           }
         }
