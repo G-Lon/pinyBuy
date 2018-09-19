@@ -69,12 +69,12 @@
         <span class="iconfont icon-kefu"></span>
         联系客服
       </div>
-      <div class="cart">
+      <div class="cart" @click="toCart">
         <span class="iconfont icon-gouwuche"></span>
         购物车
       </div>
       <div>
-        <button class="addCart">加入购物车</button>
+        <button class="addCart" @click="addCart">加入购物车</button>
         <button class="buy">立即购买</button>
       </div>
 
@@ -96,15 +96,17 @@ export default {
   },
   data() {
     return {
+      goods_id: 0, // 商品Id
       goodsInfo: [], // 商品详情图片
       selectIndex: 0, //
-      address:'', // 地址
+      address: "" // 地址
     };
   },
 
   onLoad(options) {
     // options的数据是上一个页面的query
     // console.log(options);
+    this.goods_id = options.id;
     tool
       .thenAjax({
         url: `api/public/v1/goods/detail?goods_id=${options.id}`
@@ -117,14 +119,15 @@ export default {
 
   methods: {
     // tab栏的切换
+
     changeSelect(idx) {
       this.selectIndex = idx;
     },
 
     // 选择地址
-    chooseAddress(){
+    chooseAddress() {
       wx.chooseAddress({
-        success: (res)=> {
+        success: res => {
           // console.log(res.userName);
           // console.log(res.postalCode);
           // console.log(res.provinceName);
@@ -133,9 +136,50 @@ export default {
           // console.log(res.detailInfo);
           // console.log(res.nationalCode);
           // console.log(res.telNumber);
-          this.address = res.provinceName + ' ' + res.cityName + ' ' + res.countyName;
-          
+          this.address =
+            res.provinceName + " " + res.cityName + " " + res.countyName;
         }
+      });
+    },
+
+    // 点击加入购物车
+    addCart() {
+      // 读取缓存的数据
+      let cart = wx.getStorageSync("cart");
+      if (cart) {
+        // 如果有
+        if (cart[this.goods_id]) {
+          // 如果该商品已经加入过,就在原来的基础上加上1
+          cart[this.goods_id] += 1;
+        } else {
+          // 如果没有添加,购买数量就为1
+          cart[this.goods_id] = 1;
+        }
+      } else {
+        // 如果没有
+        // cart = {
+        //   // 默认属性名 无论些什么 都会直接解析为 属性名{ goods_id:}
+        //   // 加上中括号的目的是 把这个变量(表达式解析了)把值放在那个位置
+        //   [this.goods_id]:1
+        // }
+        cart = {};
+        cart[this.goods_id] = 1;
+      }
+
+      wx.setStorageSync("cart", cart);
+    },
+
+    // 去购物车
+    toCart() {
+      // 购物车页面是由tabbar管理维护的
+      // 这种页面的跳转方式不是 navigateTo
+      // switchTab即可
+      // wx.navigateTo({
+      //   url: '/pages/cart/main'
+      //  });
+
+      wx.switchTab({
+        url: "/pages/cart/main"
       });
     },
 
@@ -313,7 +357,7 @@ swiper {
 }
 
 // 底部控件
-.footer { 
+.footer {
   box-sizing: border-box;
   height: 100rpx;
   width: 100%;

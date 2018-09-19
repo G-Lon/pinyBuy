@@ -61,7 +61,7 @@ export default {
       history: [], // 搜索历史
       search: "", // 搜索内容
       goodsList: [], // 商品搜索列表
-      goodsDeafult:[], // 商品默认数据
+      goodsDeafult: [], // 商品默认数据
       selectIndex: 0, // 选择状态
       orderPrice: true //
     };
@@ -77,8 +77,8 @@ export default {
 
   methods: {
     // 根据输入内容搜索
-    getData(){
-       tool
+    getData() {
+      tool
         .thenAjax({
           url: `api/public/v1/goods/search?query=${this.search}`
         })
@@ -101,8 +101,8 @@ export default {
       this.history.unshift(this.search);
 
       // 如果历史搜索记录的内容超过十条，就显示最新的十条
-      if(this.history.length>10){
-        this.history.pop()
+      if (this.history.length > 10) {
+        this.history.pop();
       }
       wx.setStorage({
         key: "history",
@@ -110,7 +110,7 @@ export default {
       });
 
       // 根据输入的值请求数据
-     this.getData()
+      this.getData();
     },
 
     // 清空搜索框的内容
@@ -136,36 +136,35 @@ export default {
     },
 
     // 点击搜索历史记录的列表去搜索
-    searchVal(event){
+    searchVal(event) {
       // console.log(event);
       this.search = event.target.dataset.val;
 
       // 根据值去搜索
-      this.getData()
-      
+      this.getData();
     }
   },
 
   // 计算属性
-  computed:{
+  computed: {
     // 按照不同的条件进行排序
-    orderArr(){
+    orderArr() {
       // 当为默认值时返回默认的数据
-      if(this.selectIndex == 0){
+      if (this.selectIndex == 0) {
         return this.goodsList;
         // 如果按销量排
-      }else if (this.selectIndex == 1){
-        this.goodsList.sort((a,b)=>{
+      } else if (this.selectIndex == 1) {
+        this.goodsList.sort((a, b) => {
           // 销量从大到小排
-          return a.goods_id - b.goods_id
+          return a.goods_id - b.goods_id;
         });
 
         return this.goodsList;
-      }else if (this.selectIndex == 2){
-        this.goodsList.sort((a,b)=>{
-          if(this.orderPrice == true){
+      } else if (this.selectIndex == 2) {
+        this.goodsList.sort((a, b) => {
+          if (this.orderPrice == true) {
             return a.goods_price - b.goods_price;
-          }else {
+          } else {
             return b.goods_price - a.goods_price;
           }
         });
@@ -321,5 +320,4 @@ export default {
     }
   }
 }
-
 </style>

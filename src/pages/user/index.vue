@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="user-header">
-      <button >
+      <!-- 获取用户信息时需要使用button 并且需要加上open-type来增强开放能力 还要绑定bindgetuserinfo -->
+      <button open-type="getUserInfo" @getuserinfo="userInfo">
         <img :src="icon" alt="" class="icon">
       </button>
+
       <span class="iconfont icon-shezhi"></span>
       <span class="iconfont icon-xiaoxi"></span>
       <span class="info">{{info}}</span>
@@ -41,7 +43,13 @@ export default {
     };
   },
 
-  methods: {}
+  methods: {
+    userInfo(res) {
+      // console.log(res);
+      this.icon = res.mp.detail.userInfo.avatarUrl;
+      this.info = res.mp.detail.userInfo.nickName;
+    }
+  }
 };
 </script>
 
@@ -53,14 +61,19 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  .icon {
-    display: block;
-    margin: 0 auto;
+  button {
     width: 140rpx;
     height: 140rpx;
     border: 3px solid #fff;
     border-radius: 50%;
+    padding: 0;
+    .icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
   }
+
   .icon-shezhi {
     position: absolute;
     left: 50%;
